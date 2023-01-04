@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\harpe\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\harpe\\.nuget\\packages"
+    ]
+  }
+}
