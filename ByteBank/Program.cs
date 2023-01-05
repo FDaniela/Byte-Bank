@@ -13,33 +13,34 @@ namespace ByteBank
             Console.WriteLine("         .                                                     .");
             Console.WriteLine("         .                     MENU BYTEBANK                   .");
             Console.WriteLine("         .                                                     .");
-            Console.WriteLine("         .            1 - Criar nova conta                     .");
-            Console.WriteLine("         .            2 - Remover conta                        .");
-            Console.WriteLine("         .            3 - Listar contas registradas            .");
-            Console.WriteLine("         .            4 - Detalhar usuário                     .");
-            Console.WriteLine("         .            5 - Mostrar valor armazenado             .");
-            Console.WriteLine("         .            6 - Manipular a conta                    ."); //Menu Secundário
-            Console.WriteLine("         .            0 - Finalizar operação                   .");
+            Console.WriteLine("         .            [1] - Criar nova conta                   .");
+            Console.WriteLine("         .            [2] - Remover conta                      .");
+            Console.WriteLine("         .            [3] - Listar contas registradas          .");
+            Console.WriteLine("         .            [4] - Detalhar usuário                   .");
+            Console.WriteLine("         .            [5] - Mostrar Montante do Banco          .");
+            Console.WriteLine("         .            [6] - Manipular conta                    ."); //Menu Secundário
+            Console.WriteLine("         .            [0] - Finalizar operação                 .");
             Console.WriteLine("         .                                                     .");
             Console.WriteLine("         .......................................................");
             Console.WriteLine();
-            Console.Write("Digite a operação desejada: ");  
+            Console.Write("         Digite a operação desejada: ");  
         }
         public static void MenuSecundario()
         { 
             Console.WriteLine("         .......................................................");
             Console.WriteLine("         .                                                     .");
-            Console.WriteLine("         .                     MENU BYTEBANK                   .");
+            Console.WriteLine("         .                      MENU CONTA                     .");
             Console.WriteLine("         .                                                     .");
-            Console.WriteLine("         .            1 - Depositar                            .");
-            Console.WriteLine("         .            2 - Sacar                                .");
-            Console.WriteLine("         .            3 - Transferir                           .");
-            Console.WriteLine("         .            4 - Saldo                                .");
-            Console.WriteLine("         .            0 - Finalizar operação                   .");
+            Console.WriteLine("         .            [1] - Depositar                          .");
+            Console.WriteLine("         .            [2] - Sacar                              .");
+            Console.WriteLine("         .            [3] - Transferir                         .");
+            Console.WriteLine("         .            [4] - Ver Saldo                          .");
+            Console.WriteLine("         .            [0] - Finalizar operação                 .");
             Console.WriteLine("         .                                                     .");
             Console.WriteLine("         .......................................................");
             Console.WriteLine();
-            Console.Write("Digite a operação desejada: ");
+            Console.Write("         Digite a operação desejada: ");
+            
         }
         public static void Linhas()
         {
@@ -50,13 +51,16 @@ namespace ByteBank
         public static void Linha()
         {
             Console.WriteLine();
-            Console.WriteLine("________________________________________________________________");
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("__________________________________________________________________________________");
+            Console.ResetColor();
             Console.WriteLine();
         }
         #endregion
-        public static void Main(string[] args)
+        public static void Main()
         {
             int operacao;
+            Sistema.BancoDadosInicial();
             do
             {
                 MenuPrincipal();
@@ -72,13 +76,18 @@ namespace ByteBank
 
                     case 2: // Remover Conta
                         Console.Write("Digite o cpf da conta que deseja remover: ");
-                        string cpfConta = Console.ReadLine();
-                        Sistema.RemoverConta(cpfConta);
+                        string checkCpf = Console.ReadLine();
+                        Console.Write("Senha: ");
+                        int checkSenha = Convert.ToInt32(Sistema.Senha());
+                        bool contaValidada = Sistema.ValidarConta(checkCpf, checkSenha);
+                        if (contaValidada == true) { Sistema.RemoverConta(checkCpf); }
+
                         Linha();
                         break;
 
                     case 3: // Listar Contas
                         int contador = 0;
+                        Console.WriteLine("            LISTA DE CONTAS CADASTRADAS                  \n\n");
                         foreach (Conta c in Sistema.ListarContas())
                         {
                             contador++;
@@ -102,24 +111,27 @@ namespace ByteBank
 
                     case 6: // Manipular Conta - Menu Secundário
                         int operacao2 = 0;
-                        Console.Write("Informe o cpf para realizar a movimentação: ");
-                        string checkCpf = Console.ReadLine();
-                        Console.Write("Informe a senha da conta: ");
-                        int checkSenha = Convert.ToInt32(Console.ReadLine());
-                        int contaValidada = Conta.ValidarConta(checkCpf, checkSenha);
+                        Console.Write("Login (cpf): ");
+                        checkCpf = Console.ReadLine();
+                        Console.Write("Senha: ");
+                        checkSenha = Convert.ToInt32(Sistema.Senha());
+                        Sistema.MensagemSucesso("Login realizado com sucesso.");
+                        Linhas();
+                        contaValidada = Sistema.ValidarConta(checkCpf, checkSenha);
                         do
                         {
-                            if (contaValidada == -1)
+                            if (contaValidada == false)
                             {
                                 Linhas();
-                                Console.WriteLine("Dados incorretos, operação encerrada.");
-                                Console.WriteLine("Retornando ao menu anterior ...");
+                                Sistema.MensagemFalha("Dados incorretos, operação encerrada.");
+                                Sistema.MensagemFalha("Retornando ao menu anterior ...");
                                 Linha();
                             }
                             else
                             {
                                 MenuSecundario();
                                 operacao2 = Convert.ToInt32(Console.ReadLine());
+                                Linhas();
                                 switch (operacao2)
                                 {
                                     case 1: // Depositar 
@@ -135,7 +147,13 @@ namespace ByteBank
                                         Linha();
                                         break;
                                     case 3: // Transferir
-
+                                        Console.Write("Digite o cpf da conta que deseja realizar a transferência: ");
+                                        string transferirCpf = Console.ReadLine();
+                                        Console.Write("Digite o número da conta que deseja realizar a transferência: ");
+                                        int transferirConta = Convert.ToInt32(Console.ReadLine());
+                                        Console.Write("Digite o valor a ser transferido: ");
+                                        double transferirValor = Convert.ToDouble(Console.ReadLine());
+                                        Conta.Transferir(checkCpf, transferirCpf, transferirConta ,transferirValor);
                                         Linha();
                                         break;
                                     case 4: // Saldo
@@ -143,12 +161,12 @@ namespace ByteBank
                                         Linha();
                                         break;
                                     case 0: // Finalizar
-                                        Console.WriteLine("Sessão Finalizada");
+                                        Sistema.MensagemSucesso("Sessão Finalizada com Sucesso");
                                         Linha();
                                         break;
 
                                     default:
-                                        Console.WriteLine("Operação inválida");
+                                        Sistema.MensagemFalha("Operação inválida");
                                         Linha();
                                         break;
                                 }
@@ -157,19 +175,19 @@ namespace ByteBank
                         break;
 
                     case 0: //Finalizar
-                        Console.WriteLine("Sessão Finalizada");
+                        Sistema.MensagemSucesso("Sessão Finalizada");
                         Linha();
                         break;
 
                     default:
-                        Console.WriteLine("Operação inválida");
+                        Sistema.MensagemFalha("Operação inválida");
                         Linha();
                         break;
                 }
 
             } while (operacao != 0);
-            
-            Console.WriteLine("Precione qualquer tecla para encerrar o terminal ByteBank");
+
+            Sistema.MensagemSucesso("Pressione qualquer tecla para encerrar o terminal ByteBank");
             Console.ReadKey();
         }
     }

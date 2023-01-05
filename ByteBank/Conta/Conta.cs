@@ -29,52 +29,56 @@ namespace ByteBank.Contas
         #endregion
        
         #region MétodosContas
-        public static int ValidarConta(string cpf, int senha)
-        {
-            int contador = 0;
-            foreach (Conta c in contasSistema)
-            {
-                contador++;
-                if (c.Titular.Cpf == cpf && c.Senha == senha)
-                {
-                    return contador;
-                }
-                else return -1;
-            }
-            return -1;
-        }
         public static void Depositar(string cpf, double valor)
         {
+            bool flag = false;
             foreach (Conta c in contasSistema)
             {
                 if (c.Titular.Cpf == cpf && valor > 0)
                 {
                     c.Saldo += valor;
                     Sistema.montante += valor;
+                    flag = true;
                 }
-                else
-                {
-                    Console.WriteLine("O valor a ser depositado deve ser maior que 0.");
-                }
+
+            }
+            if(flag == false)
+            {
+                Sistema.MensagemFalha("O valor a ser depositado deve ser maior que 0.");
             }
         }
-        public static void Transferir(string cpf)
+        public static void Transferir(string cpf, string cpfTransferir, int contaTransferir, double valor)
         {
-            //To do
+            bool flag = false;
+            foreach (Conta c in contasSistema)
+            { 
+                if (c.Titular.Cpf == cpfTransferir && c.NumeroConta == contaTransferir && valor > 0)
+                {
+                    Depositar(cpfTransferir, valor);
+                    Sacar(cpf,valor);
+                    flag = true;
+                }
+            }
+            if (flag == false)
+            {
+                Sistema.MensagemFalha("Conta não encontrada");
+            }
         }
         public static void Sacar(string cpf, double valor)
         {
+            bool flag = false;
             foreach (Conta c in contasSistema)
             {
                 if (c.Titular.Cpf == cpf && valor <= c.Saldo)
                 {
                     c.Saldo -= valor;
                     Sistema.montante -= valor;
+                    flag = true;
                 }
-                else
-                {
-                    Console.WriteLine("Valor do saque inválido.");
-                }
+            }
+            if (flag == false)
+            {
+                Sistema.MensagemFalha("Valor do saque inválido.");
             }
         }
         public static void VerSaldo(string cpf)
@@ -83,7 +87,7 @@ namespace ByteBank.Contas
             {
                 if (c.Titular.Cpf == cpf)
                 {
-                    Console.WriteLine($"O saldo da conta atualmente é {c.Saldo}.");
+                    Console.WriteLine($"O saldo da conta atualmente é R$ {c.Saldo.ToString("F2")}.");
                 }
             }
         }
