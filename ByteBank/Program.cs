@@ -23,10 +23,10 @@ namespace ByteBank
             Console.WriteLine("         .                                                     .");
             Console.WriteLine("         .......................................................");
             Console.WriteLine();
-            Console.Write("         Digite a operação desejada: ");  
+            Console.Write("         Digite a operação desejada: ");
         }
         public static void MenuSecundario()
-        { 
+        {
             Console.WriteLine("         .......................................................");
             Console.WriteLine("         .                                                     .");
             Console.WriteLine("         .                      MENU CONTA                     .");
@@ -40,7 +40,7 @@ namespace ByteBank
             Console.WriteLine("         .......................................................");
             Console.WriteLine();
             Console.Write("         Digite a operação desejada: ");
-            
+
         }
         public static void Linhas()
         {
@@ -153,7 +153,7 @@ namespace ByteBank
                                         int transferirConta = Convert.ToInt32(Console.ReadLine());
                                         Console.Write("Digite o valor a ser transferido: ");
                                         double transferirValor = Convert.ToDouble(Console.ReadLine());
-                                        Conta.Transferir(checkCpf, transferirCpf, transferirConta ,transferirValor);
+                                        Conta.Transferir(checkCpf, transferirCpf, transferirConta, transferirValor);
                                         Linha();
                                         break;
                                     case 4: // Saldo

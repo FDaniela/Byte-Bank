@@ -16,22 +16,18 @@ namespace ByteBank.Sistemas
         public static string Senha()
         {
             string senha = "";
-
-
             while (true)
             {
                 ConsoleKeyInfo tecla = Console.ReadKey(true);
-
                 if (tecla.Key == ConsoleKey.Enter)
                 {
                     break;
                 }
                 senha += tecla.KeyChar;
-                if(tecla.Key != ConsoleKey.Backspace) Console.Write("*");
+                if (tecla.Key != ConsoleKey.Backspace) Console.Write("*");
             }
             //Console.WriteLine($"\nLog - {senha}.");
             Console.WriteLine();
-
             return senha;
         }
         public static int NumeroContaAtribuido()

@@ -8,7 +8,7 @@ namespace ByteBank.Contas
     public class Conta
     {
         public static ArrayList contasSistema = Sistema.ListarContas();
-       
+
         #region AtributosConta
         public Cliente Titular { get; private set; }
         public int NumeroConta { get; private set; }
@@ -16,7 +16,7 @@ namespace ByteBank.Contas
         public int Senha { get; private set; }
         public double Saldo { get; private set; }
         #endregion
-        
+
         #region ConstrutorConta
         public Conta(Cliente titular, int conta, int agencia, int senha, double saldo)
         {
@@ -27,7 +27,7 @@ namespace ByteBank.Contas
             this.Saldo = saldo;
         }
         #endregion
-       
+
         #region MétodosContas
         public static void Depositar(string cpf, double valor)
         {
@@ -40,9 +40,8 @@ namespace ByteBank.Contas
                     Sistema.montante += valor;
                     flag = true;
                 }
-
             }
-            if(flag == false)
+            if (flag == false)
             {
                 Sistema.MensagemFalha("O valor a ser depositado deve ser maior que 0.");
             }
@@ -51,11 +50,11 @@ namespace ByteBank.Contas
         {
             bool flag = false;
             foreach (Conta c in contasSistema)
-            { 
+            {
                 if (c.Titular.Cpf == cpfTransferir && c.NumeroConta == contaTransferir && valor > 0)
                 {
                     Depositar(cpfTransferir, valor);
-                    Sacar(cpf,valor);
+                    Sacar(cpf, valor);
                     flag = true;
                 }
             }

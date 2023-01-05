@@ -10,7 +10,7 @@ namespace ByteBank.Clientes
         public string Nome { get; private set; }
         public string Cpf { get; private set; }
         #endregion
-        
+
         #region ConstrutorCliente
         public Cliente(string nome, string cpf)
         {
