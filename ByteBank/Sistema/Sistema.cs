@@ -59,7 +59,7 @@ namespace ByteBank.Sistemas
         {
 
             Cliente cliente1 = new Cliente("Fulana da Silva", "12345678900");
-            Conta conta1 = new Conta(cliente1, Sistema.NumeroContaAtribuido(), 001, 1234, 100);
+            Conta conta1 = new Conta(cliente1, 1111, 001, 1234, 100);
             contas.Add(conta1);
 
             Cliente cliente2 = new Cliente("Beltrano de Souza", "45612378900");

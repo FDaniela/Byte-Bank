@@ -38,6 +38,7 @@ namespace ByteBank.Contas
                 {
                     c.Saldo += valor;
                     Sistema.montante += valor;
+                    Sistema.MensagemSucesso($"Deposito de R$ {valor.ToString("F2")} realizado.");
                     flag = true;
                 }
             }
@@ -53,9 +54,10 @@ namespace ByteBank.Contas
             {
                 if (c.Titular.Cpf == cpfTransferir && c.NumeroConta == contaTransferir && valor > 0)
                 {
-                    Depositar(cpfTransferir, valor);
                     Sacar(cpf, valor);
+                    Depositar(cpfTransferir, valor);
                     flag = true;
+                    Sistema.MensagemSucesso($"Transferência de R$ {valor.ToString("F2")} realizada.");
                 }
             }
             if (flag == false)
@@ -73,6 +75,7 @@ namespace ByteBank.Contas
                     c.Saldo -= valor;
                     Sistema.montante -= valor;
                     flag = true;
+                    Sistema.MensagemSucesso($"Saque de R$ {valor.ToString("F2")} realizado.");
                 }
             }
             if (flag == false)
